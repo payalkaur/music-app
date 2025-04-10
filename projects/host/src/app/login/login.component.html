@@ -1,0 +1,6 @@
+<div *ngIf="!auth.isLoggedIn(); else redirecting">
+    <button (click)="auth.login()">Login with Spotify</button>
+</div>
+<ng-template #redirecting>
+    <p>Redirecting to your music...</p>
+</ng-template>
