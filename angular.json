@@ -19,7 +19,13 @@
 						},
 						"development": {
 							"target": "host:esbuild:development",
-							"dev": true
+              "dev": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/host/src/environments/environment.ts",
+                  "with": "projects/host/src/environments/environment.development.ts"
+                }
+              ]
 						}
 					},
 					"defaultConfiguration": "production"

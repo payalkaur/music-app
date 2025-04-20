@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -12,11 +12,8 @@ import { CommonModule } from '@angular/common';
 })
 export class LoginComponent {
   auth = inject(AuthService)
-  private router = inject(Router)
 
-  ngOnInit() {
-    if (this.auth.isLoggedIn()) {
-      this.router.navigateByUrl('/song-list');
-    }
+  login() {
+    this.auth.login()
   }
 }

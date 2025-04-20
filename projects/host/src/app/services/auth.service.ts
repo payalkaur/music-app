@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -9,15 +10,18 @@ export class AuthService {
   private http = inject(HttpClient)
   private router = inject(Router)
 
-  private clientId = '1d72f3b148f24fec80d9ba7d774df1cf' // your spotify clientId //'1d72f3b148f24fec80d9ba7d774df1cf'; //process.env['SPOTIFY_CLIENT_ID']
+  private clientId = environment.SPOTIFY_CLIENT_ID // your spotify clientId //'1d72f3b148f24fec80d9ba7d774df1cf'; //process.env['SPOTIFY_CLIENT_ID']
   private redirectUrl = 'http://localhost:4200/callback'
   private authorizationUrl = "https://accounts.spotify.com/authorize"
   private tokenUrl = "https://accounts.spotify.com/api/token"
 
-  public accessToken: string | null = null
+  // public accessToken: string | null = null
 
-  constructor() {
-    this.loadToken();
+  isAuthenticatedUser() {
+    const token = localStorage.getItem('access_token')
+    const expiry = localStorage.getItem('expires_at')
+
+    return token && expiry && Date.now() < +expiry
   }
 
   async login() {
@@ -51,27 +55,7 @@ export class AuthService {
     window.location.href = authUrl // Redirect the user to the authorization server for login
   }
 
-  isLoggedIn() {
-    const expiry = localStorage.getItem('expires_at')
-    return !!this.accessToken && expiry && Date.now() < +expiry
-  }
-
-  // exchangeCodeForToken(code: string) {
-  //   const code_verifier = localStorage.getItem('code_verifier');
-  //   const body = new HttpParams()
-  //     .set('grant_type', 'authorization_code')
-  //     .set('code', code)
-  //     .set('redirect_uri', this.redirectUrl)
-  //     .set('client_id', this.clientId)
-  //     .set('code_verifier', code_verifier!);
-
-  //   return this.http.post(this.tokenUrl, body, {
-  //     headers: {
-  //       'Content-Type': 'application/x-www-form-urlencoded'
-  //     }
-  //   });
-  // }
-
+  // Function returns auth token
   exchangeCodeForToken(code: string) {
     const code_verifier = localStorage.getItem('code_verifier');
     const body = new HttpParams()
@@ -87,7 +71,7 @@ export class AuthService {
       }
     }).subscribe(response => {
       this.storeToken(response.access_token, response.expires_in);
-      this.router.navigateByUrl('/song-list');
+      this.router.navigateByUrl('/home');
     });
   }
 
@@ -95,24 +79,11 @@ export class AuthService {
     const expiryTime = Date.now() + expiresIn * 1000; // milliseconds
     localStorage.setItem('access_token', token);
     localStorage.setItem('expires_at', expiryTime.toString());
-    this.accessToken = token;
-  }
-
-  loadToken() {
-    const token = localStorage.getItem('access_token')
-    const expiry = localStorage.getItem('expires_at')
-
-    if (token && expiry && Date.now() < +expiry) {
-      this.accessToken = token;
-    } else {
-      this.logout();
-    }
   }
 
   logout() {
-    this.accessToken = null;
     localStorage.removeItem('access_token');
     localStorage.removeItem('code_verifier');
-    // this.router.navigateByUrl('/');
+    this.router.navigateByUrl('/login');
   }
 }

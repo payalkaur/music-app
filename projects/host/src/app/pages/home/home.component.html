@@ -1,0 +1,15 @@
+<div class="flex flex-col gap-2 min-h-screen">
+    <nav class="w-full shadow-md px-10 py-4">
+        <div class="flex items-center justify-between">
+            <div class="items-center justify-between max-md:w-full">
+                <a class="text-2xl text-violet-800 font-bold" routerLink="/home">Song list</a>
+            </div>
+        </div>
+    </nav>
+
+    <router-outlet></router-outlet>
+
+    <div class="w-full h-24 px-10 py-4 bottom-0 fixed">
+        <a class="text-2xl text-violet-800 font-bold" routerLink="/home/song-details">Song details</a>
+    </div>
+</div>
