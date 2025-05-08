@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-root',
+  selector: 'song-list',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './app.component.html',
@@ -43,7 +43,15 @@ export class AppComponent {
   //       });
   //   }
 
-  title = 'song-details';
+  sendEvent() {
+    const event = new CustomEvent('changeText', {
+      detail: {
+        text: 'Hello from Song list'
+      }
+    })
+
+    dispatchEvent(event)
+  }
 
 }
 

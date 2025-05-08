@@ -8,4 +8,6 @@
 <p *ngIf="!songs.length && loading">Loading your songs...</p>
 <p *ngIf="!loading && !songs.length">No songs found.</p> -->
 
-<div class="flex justify-center w-full h-[calc(100vh-96px-80px)] p-10">SONG LIST</div>
+<div class="flex justify-center w-full h-[calc(100vh-96px-80px)] p-10">
+  <button (click)="sendEvent()">SONG LIST</button>
+</div>

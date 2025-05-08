@@ -2,12 +2,18 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-root',
+  selector: 'song-details',
   standalone: true,
   imports: [],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'song-details';
+  text = "initial text"
+
+  constructor() {
+    window.addEventListener('changeText', (e: any) => {
+      this.text = e.detail.text
+    })
+  }
 }
