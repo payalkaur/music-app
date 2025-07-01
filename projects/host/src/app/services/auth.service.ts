@@ -82,6 +82,10 @@ export class AuthService {
     localStorage.setItem('expires_at', expiryTime.toString());
   }
 
+  getToken() {
+    return localStorage.getItem('access_token')
+  }
+
   logout() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('code_verifier');

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-host-home',
@@ -9,5 +10,12 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+  authService = inject(AuthService)
+
+  ngOnInit() {
+    const token = this.authService.getToken()
+    window.dispatchEvent(new CustomEvent('auth-token', { detail: token }))
+    console.log("dispatched")
+  }
 
 }
